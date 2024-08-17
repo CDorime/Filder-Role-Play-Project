@@ -1,2 +1,2 @@
-forward			OnPlayerConnectToServer(playerid);
-forward			SearchAccountInDataBase(playerid);
+forward OnPlayerConnectToServer(playerid);
+forward SearchPlayerAccount(playerid);

@@ -19,6 +19,14 @@ enum E_CAMERA_SPAWN
     Float:CameraPos_Y, // Позиция камеры по Y.
     Float:CameraPos_Z // Позиция камеры по Z.
 };
+enum E_SPAWN_POSITION
+{
+    Float:SpawnPos_X,
+    Float:SpawnPos_Y,
+    Float:SpawnPos_Z,
+
+    Float:SpawnPos_Angle
+};
 
 enum _:E_DIALOGUE_INFO
 {
@@ -31,10 +39,14 @@ enum _:E_DIALOGUE_INFO
 
 
 new
-    PlayerInfo[MAX_PLAYERS][E_PLAYER_INFO], // Переменная для привязки аккаунта игрока.
+    g_PlayerInfo[MAX_PLAYERS][E_PLAYER_INFO], // Переменная для привязки аккаунта игрока.
     MySQL:g_dbHandle,
-    CameraLookAt[MAX_CAMERA_SPAWN][E_CAMERA_SPAWN] = // Переменная для отображения камеры игрока.
+    g_CameraLookAt[MAX_CAMERA_SPAWN][E_CAMERA_SPAWN] = // Переменная для отображения камеры игрока.
     {
         {1404.6460, -1584.3406, 82.1597}, // Отображения камеры игрока по SetPlayerCameraPos.
         {1404.1823, -1583.4518, 82.3703} // Отображения камеры игрока по SetPlayerCameraLookAt.
+    },
+    g_SpawnPlayerPosition[MAX_SPAWN_POSITION][E_SPAWN_POSITION] =
+    {
+        {1756.0754,-1896.9026,13.5565,268.5927}
     };

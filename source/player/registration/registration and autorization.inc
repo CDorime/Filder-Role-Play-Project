@@ -1,16 +1,16 @@
 public OnPlayerConnect(playerid)
 {
     static const
-        PLAYER_TEAM = 0,
-        PLAYER_SKIN = 0,
+        INVALID_PLAYER_TEAM = 0,
+        STARTED_PLAYER_SKIN = 0,
         
-        Float:PLAYER_START_X = 0.0,
-        Float:PLAYER_START_Y = 0.0,
-        Float:PLAYER_START_Z = 0.0,
-        Float:PLAYER_START_ANGLE = 0.0,
+        Float:STARTED_PLAYER_X = 0.0,
+        Float:STARTED_PLAYER_Y = 0.0,
+        Float:STARTED_PLAYER_Z = 0.0,
+        Float:STARTED_PLAYER_ANGLE = 0.0,
 
-        PLAYER_WEAPONS = 0,
-        PLAYER_WEAPON_AMMO = 0,
+        STARTED_PLAYER_WEAPONS = 0,
+        STARTED_PLAYER_WEAPON_AMMO = 0,
         
         TYPE_GAMETEXT_STYLE = 1,
 
@@ -18,18 +18,18 @@ public OnPlayerConnect(playerid)
 
     SetSpawnInfo(
         playerid,
-        PLAYER_TEAM,
-        PLAYER_SKIN,
-        PLAYER_START_X,
-        PLAYER_START_Y,
-        PLAYER_START_Z,
-        PLAYER_START_ANGLE, 
-        PLAYER_WEAPONS, 
-        PLAYER_WEAPON_AMMO, 
-        PLAYER_WEAPONS, 
-        PLAYER_WEAPON_AMMO,
-        PLAYER_WEAPONS, 
-        PLAYER_WEAPON_AMMO
+        INVALID_PLAYER_TEAM,
+        STARTED_PLAYER_SKIN,
+        STARTED_PLAYER_X,
+        STARTED_PLAYER_Y,
+        STARTED_PLAYER_Z,
+        STARTED_PLAYER_ANGLE, 
+        STARTED_PLAYER_WEAPONS, 
+        STARTED_PLAYER_WEAPON_AMMO, 
+        STARTED_PLAYER_WEAPONS, 
+        STARTED_PLAYER_WEAPON_AMMO,
+        STARTED_PLAYER_WEAPONS, 
+        STARTED_PLAYER_WEAPON_AMMO
     );
     GameTextForPlayer(
         playerid, 
@@ -102,7 +102,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 	            }
 	        }
 	        strmid(
-                PlayerInfo[playerid][pPassword], 
+                g_PlayerInfo[playerid][pPassword], 
                 inputtext, 
                 0, 
                 strlen(inputtext), 
@@ -150,7 +150,7 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				if(strfind(inputtext, ".", false))
 				{
 					strmid(
-                        PlayerInfo[playerid][pEmail], 
+                        g_PlayerInfo[playerid][pEmail], 
                         inputtext, 
                         0, 
                         strlen(inputtext), 
@@ -179,8 +179,8 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
 				new 
                     start_skin_man[6] = {78, 79, 134, 137, 230};
                 
-                PlayerInfo[playerid][pPoint] = POINT_MALE;
-				PlayerInfo[playerid][pSkin] = start_skin_man[random(sizeof(start_skin_man))];
+                g_PlayerInfo[playerid][pPoint] = POINT_MALE;
+				g_PlayerInfo[playerid][pSkin] = start_skin_man[random(sizeof(start_skin_man))];
 
 				InsertPlayerAccount(playerid);
 			}
@@ -190,12 +190,31 @@ public OnDialogResponse(playerid, dialogid, response, listitem, inputtext[])
                     POINT_FEMALE = 2;
 				new
                     start_skin_woman[3] = {56, 64, 131};
-                PlayerInfo[playerid][pPoint] = POINT_FEMALE;
-				PlayerInfo[playerid][pSkin] = start_skin_woman[random(sizeof(start_skin_woman))];
+                g_PlayerInfo[playerid][pPoint] = POINT_FEMALE;
+				g_PlayerInfo[playerid][pSkin] = start_skin_woman[random(sizeof(start_skin_woman))];
 
 				InsertPlayerAccount(playerid);
 			}
 		}
+        case DIALOGUE_AUTORIZE:
+        {
+            if(
+                strlen(inputtext) > MAX_PLAYER_PASSWORD ||
+                strlen(inputtext) < MIN_PLAYER_PASSWORD
+            )
+            {
+                SendPlayerAutorization(playerid);
+                return SendClientMessage(
+                playerid, 
+                0xC9C9C9FF, 
+                "Пароль должен содержать от 6 до 24 символов!");
+            }
+            if(strcmp(inputtext, g_PlayerInfo[playerid][pPassword], false))
+            {
+                SpawnPlayer(playerid);
+            }
+            SendPlayerAutorization(playerid);
+        }
     }
 
     #if defined REG_OnDialogResponse

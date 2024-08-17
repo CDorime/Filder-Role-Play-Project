@@ -39,3 +39,5 @@
 #define					MYSQL_DATA							"gs256520"
 
 #define                 MAX_CAMERA_SPAWN                     (2)
+
+#define                 MAX_SPAWN_POSITION                   (1)

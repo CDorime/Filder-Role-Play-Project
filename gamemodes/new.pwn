@@ -1,1 +1,1 @@
-#include "../.source/.core/main.inc"
+#include "../source/core/main.inc"
